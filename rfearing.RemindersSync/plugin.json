@@ -15,15 +15,11 @@
   "plugin.changelog": "https://github.com/NotePlan/plugins/blob/main/rfearing.RemindersSync/CHANGELOG.md",
   "plugin.commands": [
     {
-      "name": "Say Hello from rfearing.RemindersSync! (change this to your own command)",
-      "description": "Your first plugin!",
-      "jsFunction": "sayHello",
-      "alias": [
-        "helloWorld Alias"
-      ],
-      "arguments": [
-        "Append this text to document"
-      ]
+      "name": "List Apple Reminders",
+      "description": "List all your apple reminders",
+      "jsFunction": "listAllReminders",
+      "alias": ["lar"],
+      "arguments": []
     },
     {
       "name": "onOpen",
@@ -39,18 +35,6 @@
     }
   ],
   "plugin.settings": [
-    {
-      "COMMENT": "Plugin settings documentation: https://help.noteplan.co/article/123-plugin-configuration",
-      "type": "heading",
-      "title": "Apple Reminders Settings"
-    },
-    {
-      "title": "A string in prefs",
-      "key": "settingsString",
-      "type": "string",
-      "description": "Enter some string and see it change when the plugin is run",
-      "default": "This default setting was set in plugin preferences!"
-    },
     {
       "NOTE": "DO NOT CHANGE THE FOLLOWING SETTINGS; ADD YOUR SETTINGS ABOVE ^^^",
       "type": "separator"

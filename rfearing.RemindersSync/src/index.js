@@ -15,7 +15,7 @@
 // So you need to add a line below for each function that you want NP to have access to.
 // Typically, listed below are only the top-level plug-in functions listed in plugin.json
 
-export { sayHello } from './NPPluginMain' // add one of these for every command specifified in plugin.json (the function could be in any file as long as it's exported)
+export { listAllReminders } from './NPPluginMain' // add one of these for every command specifified in plugin.json (the function could be in any file as long as it's exported)
 
 // FETCH mocking for offline testing
 // If you want to use external server calls in your plugin, it can be useful to mock the server responses
