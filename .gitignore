@@ -18,3 +18,5 @@ coverage/
 .hyperlayout
 .eslintignore
 package-lock.json
+# ignore .gitignore files in subdirectories
+**/.gitignore
