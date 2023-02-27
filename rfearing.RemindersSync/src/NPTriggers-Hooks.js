@@ -2,6 +2,7 @@
 // @flow
 
 import pluginJson from '../plugin.json' // gives you access to the contents of plugin.json
+import { IDENTIFIER } from './support/helpers'
 import { log, logError, logDebug, timer, clo, JSP } from '@helpers/dev'
 import { updateSettingData, pluginUpdated } from '@helpers/NPConfiguration'
 
@@ -41,6 +42,13 @@ export async function onOpen(note: TNote): Promise<void> {
   }
 }
 
+const isReminder = (paragraph) => {
+  return (
+    paragraph.content.includes(IDENTIFIER) &&
+    (paragraph.type === 'open' || paragraph.type === 'checklist')
+  )
+}
+
 /**
  * onEditorWillSave
  * Plugin entrypoint for command: "/onEditorWillSave"
@@ -48,12 +56,13 @@ export async function onOpen(note: TNote): Promise<void> {
 export async function onEditorWillSave() {
   try {
     logDebug(pluginJson, `${pluginJson['plugin.id']} :: onEditorWillSave running with note in Editor:"${String(Editor.filename)}"`)
-    // Note: as stated in the documentation, if you want to change any content in the Editor
-    // before the file is written, you should NOT use the *note* variable here to change content
-    // Instead, use Editor.* commands (e.g. Editor.insertTextAtCursor()) or Editor.updateParagraphs()
 
-    // const paragraphs = Editor.paragraphs
-    // console.log(`the paragraphs: ${  paragraphs.length}`)
+    const paragraphs = Editor.paragraphs
+    const todos = paragraphs.filter((p) => isReminder(p))
+    todos.forEach(element => {
+      console.log(element.content)
+    })
+
     // paragraphs[4].content = "test"
     // Editor.updateParagraphs(paragraphs)
   } catch (error) {

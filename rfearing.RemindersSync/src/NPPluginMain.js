@@ -1,7 +1,13 @@
 import pluginJson from '../plugin.json'
 import { createTitle, createList } from './support/helpers'
+import {
+  /* TODOIST_TOKEN, SYNC_API, PROJECTS_CACHE, */
+  createTaskFromItem,
+  createTasksFromProject,
+  getProjects,
+  getProjectItems,
+} from './support/todoistHelpers'
 import { logError, JSP } from '@helpers/dev'
-import { addTrigger } from '@helpers/NPFrontMatter'
 
 // List all lists and their reminders
 export async function listAllReminders() {
@@ -37,7 +43,50 @@ export async function listRemindersIn() {
   }
 }
 
+/*
+ * *******
+ * Todoist
+ * *******
+ */
+export async function listProjects() {
+  // console.log(DataStore.loadJSON(PROJECTS_CACHE))
+  // DataStore.saveJSON(projects, PROJECTS_CACHE)
+  const projects = await getProjects()
+  if (projects) {
+    projects.map(project => {
+      createTasksFromProject(project)
+    })
+  }
+}
 
-// Update reminders
+// Display To-dos from a specific list
+export async function listProjectItems() {
+  try {
+    const projects = await getProjects()
+    const titles = projects.map(project => project.name)
 
-// Create reminders
+    // Pick a Project
+    const optionChosen = await CommandBar.showOptions(
+      titles,
+      'Inbox'
+    )
+    const title = optionChosen.value
+    await createTitle(title, 2)
+
+    // Get Project Items & Sections
+    const project = projects.find(project => project.name === title)
+    const data = await getProjectItems(project.id)
+
+    Object.keys(data).map(key => {
+      const section = data[key]
+
+      if (section.name) {
+        createTitle(section.name, 4)
+      }
+
+      section.items.map(item => createTaskFromItem(item))
+    })
+  } catch (error) {
+    logError(pluginJson, JSP(error))
+  }
+}

@@ -1,20 +1,36 @@
 // @flow
 
 // Types:
-type TypeOptions = 'open' | 'checklist'
+type ReminderType = {
+  title: string,
+  date: string, // (always the date that the plugin is run)
+  endDate?: string,
+  type: string,
+  isAllDay?: Boolean,
+  isCompleted?: boolean,
+  occurrences?: string[],
+  calendar?: string,
+  notes?: string,
+  url?: string,
+  availability?: number
+}
+
+// export const IDENTIFIER = '%%rfearing.RemindersSync%%'
+export const IDENTIFIER = '%%\u200B%%'
 
 // Create Task from Reminder
-export const createTask = (reminderText: string = '', type: TypeOptions = 'open') => {
-  Editor.insertParagraphAtCursor(reminderText, type, 0)
+export const createTask = (reminderText: string = '') => {
+  Editor.insertParagraphAtCursor(`${reminderText} ${IDENTIFIER}`, 'open', 0)
 }
 
 // Create Title for List
-export const createTitle = (title: string = '') => {
-  Editor.insertTextAtCursor(`### ${title}\n`)
+export const createTitle = (title: string = '', heading = 3) => {
+  const header = [...Array(heading)].map(() => '#').join('')
+  Editor.insertTextAtCursor(`${header} ${title} ${IDENTIFIER} \n`)
 }
 
-// Insert options for an array of strings
-export const createList = async (list: Array<string> = []) => {
+// Create a task from a an array of reminders
+export const createList = async (list: ReminderType[] = []) => {
   for (const reminder of list) {
     if (reminder?.isCompleted) {
       continue
@@ -23,17 +39,3 @@ export const createList = async (list: Array<string> = []) => {
     await createTask(reminder.title)
   }
 }
-
-/*
-Title: Modest Mouse
-date: (always the date that the plugin is run)
-endDate: undefined
-type: reminder
-isAllDay: true
-isCompleted: false
-occurrences: undefined
-calendar: Band Bucket List
-notes:
-url:
-availability: 0
-*/
