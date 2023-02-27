@@ -2,8 +2,6 @@
 
 import pluginJson from '../../plugin.json'
 
-// Make this an environment variable:
-export const TODOIST_TOKEN = '9e51d0ad84d55eee09811f76203204625fd1e46c'
 export const SYNC_API = 'https://api.todoist.com/sync/v9'
 export const PROJECTS_CACHE = `${pluginJson['plugin.id']}-projects.json`
 
@@ -45,16 +43,32 @@ export type ProjectType = {
 	view_style?: string,
 }
 
-const getOptions = body => ({
-	method: 'POST',
-	headers: {
-		'Authorization': `Bearer ${TODOIST_TOKEN}`,
-		'Content-Type': 'application/json'
-	},
-	body
-})
+const getOptions = body => {
+	const token = getApiToken()
+	return {
+		method: 'POST',
+		headers: {
+			'Authorization': `Bearer ${token}`,
+			'Content-Type': 'application/json'
+		},
+		body
+	}
+}
 
 const shouldShow = data => !(data.is_deleted || data.is_archived)
+
+/**
+ * Checks if the Todoist api token is valid
+ */
+const getApiToken = (): void => {
+  const apiToken = DataStore.settings.apiToken ?? ''
+
+  if (apiToken === '') {
+    CommandBar.prompt('API Token Needed', 'No api token found. Please add your Todoist api token in the plugin settings.')
+    return
+  }
+	return apiToken
+}
 
 // Create Task from Reminder
 export const createTasksFromProject = (project: ProjectType) => {

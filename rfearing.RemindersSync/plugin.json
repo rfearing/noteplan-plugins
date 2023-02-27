@@ -57,6 +57,14 @@
   ],
   "plugin.settings": [
     {
+      "title": "API token",
+      "key": "apiToken",
+      "required": true,
+      "type": "string",
+      "description": "Enter your todoist api token from https://todoist.com/app/settings/integrations/developer",
+      "default": ""
+    },
+    {
       "NOTE": "DO NOT CHANGE THE FOLLOWING SETTINGS; ADD YOUR SETTINGS ABOVE ^^^",
       "type": "separator"
     },
