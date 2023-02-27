@@ -1,5 +1,6 @@
 import pluginJson from '../plugin.json'
-import { createTitle, createList } from './support/helpers'
+import { addTrigger } from '../../helpers/NPFrontMatter'
+import { createTitle, createRemindersList } from './support/helpers'
 import {
   /* TODOIST_TOKEN, SYNC_API, PROJECTS_CACHE, */
   createTaskFromItem,
@@ -16,7 +17,7 @@ export async function listAllReminders() {
     for (const title of titles) {
       await createTitle(title)
       const reminders = await Calendar.remindersByLists([title])
-      createList(reminders)
+      createRemindersList(reminders)
     }
   } catch (error) {
     logError(pluginJson, JSP(error))
@@ -37,7 +38,7 @@ export async function listRemindersIn() {
     const title = [titles[optionChosen]]
     await createTitle(title)
     const reminders = await Calendar.remindersByLists(title)
-    createList(reminders)
+    createRemindersList(reminders)
   } catch (error) {
     logError(pluginJson, JSP(error))
   }
@@ -62,6 +63,7 @@ export async function listProjects() {
 // Display To-dos from a specific list
 export async function listProjectItems() {
   try {
+    addTrigger(Editor, 'onEditorWillSave', pluginJson['plugin.id'], 'onEditorWillSave')
     const projects = await getProjects()
     const titles = projects.map(project => project.name)
 

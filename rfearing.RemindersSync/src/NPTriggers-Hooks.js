@@ -44,8 +44,7 @@ export async function onOpen(note: TNote): Promise<void> {
 
 const isReminder = (paragraph) => {
   return (
-    paragraph.content.includes(IDENTIFIER) &&
-    (paragraph.type === 'open' || paragraph.type === 'checklist')
+    paragraph.content.includes(IDENTIFIER) // && (paragraph.type === 'open' || paragraph.type === 'checklist')
   )
 }
 
@@ -60,7 +59,9 @@ export async function onEditorWillSave() {
     const paragraphs = Editor.paragraphs
     const todos = paragraphs.filter((p) => isReminder(p))
     todos.forEach(element => {
-      console.log(element.content)
+      if (element.type === 'done') {
+        console.log(`DONE: ${element.content}`)
+      }
     })
 
     // paragraphs[4].content = "test"

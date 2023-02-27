@@ -1,47 +1,10 @@
 // @flow
 
 import pluginJson from '../../plugin.json'
-
+import {ProjectType, ItemType} from './types'
 export const SYNC_API = 'https://api.todoist.com/sync/v9'
 export const PROJECTS_CACHE = `${pluginJson['plugin.id']}-projects.json`
-
 export const IDENTIFIER = '%%\u200B%%'
-
-export type ItemType = {
-  id: string,
-  user_id: string,
-  project_id?: string,
-  content: string,
-  description?: string,
-  priority: number,
-  due?: number,
-  parent_id?: number,
-  child_order: 1,
-  section_id?: string,
-  day_order: number,
-  collapsed: boolean,
-  labels: string[],
-  checked: boolean,
-  is_deleted: boolean,
-  sync_id?: string,
-  added_at: string
-}
-
-export type ProjectType = {
-	id: string,
-	name: string,
-	color: ?string,
-  project_id?: string,
-  parent_id?: number,
-  child_order: 1,
-	collapsed?: boolean,
-	shared?: boolean,
-	sync_id?: string,
-	is_deleted?: boolean,
-	is_archived?: boolean,
-	is_favorite?: boolean,
-	view_style?: string,
-}
 
 const getOptions = body => {
 	const token = getApiToken()
@@ -60,7 +23,7 @@ const shouldShow = data => !(data.is_deleted || data.is_archived)
 /**
  * Checks if the Todoist api token is valid
  */
-const getApiToken = (): void => {
+const getApiToken = () => {
   const apiToken = DataStore.settings.apiToken ?? ''
 
   if (apiToken === '') {
