@@ -1,22 +1,22 @@
 // @flow
 
-import { ReminderType, TypeOptions } from './types'
+// import { ReminderType, TypeOptions } from './types'
 
 export const IDENTIFIER = '%%\u200B%%'
 
 // Create Task from Reminder
-export const createTask = (reminderText: string = '', type: TypeOptions = 'open') => {
+export const createTask = (reminderText= '', type = 'open') => {
   Editor.insertParagraphAtCursor(`${reminderText} ${IDENTIFIER}`, type, 0)
 }
 
 // Create Title for List
-export const createTitle = (title: string = '', heading = 3) => {
+export const writeTitle = (title = '', heading = 3) => {
   const header = [...Array(heading)].map(() => '#').join('')
   Editor.insertTextAtCursor(`${header} ${title} ${IDENTIFIER} \n`)
 }
 
 // Create a task from a an array of reminders
-export const createRemindersList = async (list: ReminderType[] = []) => {
+export const createRemindersList = async (list) => {
   for (const reminder of list) {
     if (reminder?.isCompleted) {
       continue

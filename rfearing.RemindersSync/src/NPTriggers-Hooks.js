@@ -60,7 +60,7 @@ export async function onEditorWillSave() {
     const todos = paragraphs.filter((p) => isReminder(p))
     todos.forEach(element => {
       if (element.type === 'done') {
-        console.log(`DONE: ${element.content}`)
+        // console.log(`DONE: ${element.content}`)
       }
     })
 

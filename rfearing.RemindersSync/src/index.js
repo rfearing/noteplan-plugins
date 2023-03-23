@@ -1,4 +1,4 @@
-export { listAllReminders, listRemindersIn, listProjects, listProjectItems } from './NPPluginMain' // add one of these for every command specified in plugin.json (the function could be in any file as long as it's exported)
+export { listAllReminders, listRemindersIn, listProjects, listProjectItems, syncProjects } from './NPPluginMain' // add one of these for every command specified in plugin.json (the function could be in any file as long as it's exported)
 
 /**
  * Other imports/exports - you will normally not need to edit these

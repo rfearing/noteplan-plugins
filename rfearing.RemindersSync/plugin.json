@@ -29,10 +29,10 @@
       "arguments": []
     },
     {
-      "name": "Todoist Projects",
+      "name": "Sync Todoist",
       "description": "",
-      "jsFunction": "listProjects",
-      "alias": [],
+      "jsFunction": "syncProjects",
+      "alias": ["sync"],
       "arguments": []
     },
     {
