@@ -1,7 +1,7 @@
 // @flow
 
 import pluginJson from '../../plugin.json'
-import {ProjectType, ItemType} from './types'
+// import {ProjectType, ItemType} from './types'
 export const SYNC_API = 'https://api.todoist.com/sync/v9'
 export const PROJECTS_CACHE = `${pluginJson['plugin.id']}-projects.json`
 export const IDENTIFIER = '%%\u200B%%'
@@ -18,7 +18,8 @@ const getOptions = body => {
 	}
 }
 
-const shouldShow = data => !(data.is_deleted || data.is_archived)
+const projectsToIgnore = ['Team Inbox']
+const shouldShow = data => !(data.is_deleted || data.is_archived || projectsToIgnore.includes(data.name))
 
 /**
  * Checks if the Todoist api token is valid
@@ -34,15 +35,15 @@ const getApiToken = () => {
 }
 
 // Create Task from Reminder
-export const createTasksFromProject = (project: ProjectType) => {
-	Editor.insertTextAtCursor(`### ${project.name} ${IDENTIFIER} \n`)
+export const createTasksFromProject = (project) => {
+	Editor.insertTextAtCursor(`### ${project.name}\n`)
 }
 
 // Create Task from Reminder
-export const createTaskFromItem = (item: ItemType) => {
-	Editor.insertParagraphAtCursor(`${item.content} ${IDENTIFIER}`, 'open', 0)
+export const createTaskFromItem = (item) => {
+	Editor.insertParagraphAtCursor(`${item.content} %%${item.id}%%`, 'open', 0)
 	if (item.description) {
-		Editor.insertParagraphAtCursor(`${item.description} ${IDENTIFIER}`, 'text', 1)
+		Editor.insertParagraphAtCursor(`${item.description} %%${item.id}%%`, 'text', 1)
 	}
 }
 
@@ -68,7 +69,7 @@ export const getProjects = async (sync_token = '*') => {
   }
 }
 
-export const getProjectItems = async (project_id: string) => {
+export const getProjectItems = async (project_id) => {
   try {
     const body = JSON.stringify({project_id})
     const options = getOptions(body)
